@@ -36,7 +36,7 @@
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </head>
-<body class="bg-gray-100 font-sans pb-24">
+<body class="bg-gray-100 font-sans pb-28">
 
     <!-- Top Bar with Clean Language Selector -->
     <div class="bg-gray-900 text-white text-xs py-2 px-4 shadow">
@@ -64,7 +64,7 @@
             </div>
 
             <!-- Header Cart Indicator -->
-            <button onclick="toggleCartModal()" class="relative bg-orange-600 hover:bg-orange-700 px-3 py-1.5 rounded-lg flex items-center gap-2 transition">
+            <button onclick="openCheckoutModal()" class="relative bg-orange-600 hover:bg-orange-700 px-3 py-1.5 rounded-lg flex items-center gap-2 transition">
                 <i class="fa-solid fa-cart-shopping text-lg"></i>
                 <span class="font-bold text-sm" id="cartCount">0</span>
             </button>
@@ -103,9 +103,51 @@
                 <p class="text-xs text-gray-500">மொத்த தொகை (Total):</p>
                 <p class="text-lg font-bold text-orange-600" id="cartTotal">Rs. 0</p>
             </div>
-            <button onclick="sendCartToWhatsApp()" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-5 rounded-lg flex items-center gap-2 text-sm shadow transition">
-                <i class="fa-brands fa-whatsapp text-lg"></i> WhatsApp-இல் ஆர்டர் செய்
+            <button onclick="openCheckoutModal()" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-5 rounded-lg flex items-center gap-2 text-sm shadow transition">
+                <i class="fa-brands fa-whatsapp text-lg"></i> ஆர்டரை உறுதி செய் (Checkout)
             </button>
+        </div>
+    </div>
+
+    <!-- Checkout Modal with Customer Details & Address -->
+    <div id="checkoutModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-md w-full p-6 shadow-xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-address-book text-orange-500"></i> டெலிவரி விவரங்கள் (Delivery Details)
+            </h3>
+            
+            <form id="orderForm" onsubmit="submitOrder(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">வாடிக்கையாளர் பெயர் (Full Name)</label>
+                    <input type="text" id="custName" required class="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:border-orange-500" placeholder="உங்கள் பெயரை உள்ளிடவும்">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">மின்னஞ்சல் (Email Address)</label>
+                    <input type="email" id="custEmail" required class="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:border-orange-500" placeholder="example@gmail.com">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">தொலைபேசி எண் (Phone Number)</label>
+                    <input type="tel" id="custPhone" required class="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:border-orange-500" placeholder="0771234567">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">டெலிவரி முகவரி (Delivery Address)</label>
+                    <textarea id="custAddress" required rows="3" class="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:border-orange-500" placeholder="வீட்டு எண், வீதி, ஊர் மற்றும் அஞ்சல் குறியீடு"></textarea>
+                </div>
+                
+                <div class="border-t pt-3">
+                    <p class="text-sm font-bold text-gray-700 flex justify-between">
+                        <span>செலுத்த வேண்டிய மொத்த தொகை:</span>
+                        <span class="text-orange-600" id="modalTotal">Rs. 0</span>
+                    </p>
+                </div>
+
+                <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2.5 rounded-lg flex items-center justify-center gap-2 text-sm shadow transition">
+                    <i class="fa-brands fa-whatsapp"></i> வாட்ஸ்அப் மூலம் ஆர்டர் அனுப்பவும்
+                </button>
+            </form>
         </div>
     </div>
 
@@ -185,6 +227,7 @@
             
             let total = cart.reduce((sum, item) => sum + item.price, 0);
             document.getElementById('cartTotal').innerText = `Rs. ${total}`;
+            document.getElementById('modalTotal').innerText = `Rs. ${total}`;
 
             const cartBar = document.getElementById('cartBar');
             if (cart.length > 0) {
@@ -194,21 +237,44 @@
             }
         }
 
-        function sendCartToWhatsApp() {
-            if (cart.length === 0) return;
+        function openCheckoutModal() {
+            if (cart.length === 0) {
+                alert("உங்கள் கார்ட்டில் எந்தப் பொருட்களும் இல்லை!");
+                return;
+            }
+            document.getElementById('checkoutModal').classList.remove('hidden');
+        }
 
-            let message = "வணக்கம்! நான் பின்வரும் பொருட்களை ஆர்டர் செய்ய விரும்புகிறேன்:\n\n";
+        function closeCheckoutModal() {
+            document.getElementById('checkoutModal').classList.add('hidden');
+        }
+
+        function submitOrder(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('custName').value;
+            const email = document.getElementById('custEmail').value;
+            const phone = document.getElementById('custPhone').value;
+            const address = document.getElementById('custAddress').value;
+
+            let message = `🛒 *புதிய ஆன்லைன் ஆர்டர் (New Order)*\n\n`;
+            message += `👤 *பெயர்:* ${name}\n`;
+            message += `📧 *ஈமெயில்:* ${email}\n`;
+            message += `📱 *தொலைபேசி:* ${phone}\n`;
+            message += `📍 *முகவரி:* ${address}\n\n`;
+            message += `📦 *ஆர்டர் செய்த பொருட்கள்:*\n`;
+
             let total = 0;
-
             cart.forEach((item, i) => {
-                message += `${i + 1}. *${item.name}* - Rs.${item.price}\n`;
+                message += `${i + 1}. ${item.name} - Rs.${item.price}\n`;
                 total += item.price;
             });
 
-            message += `\n*மொத்தத் தொகை:* Rs.${total}`;
+            message += `\n💰 *மொத்தத் தொகை:* Rs.${total}`;
 
             const whatsappUrl = `https://wa.me/${myPhoneNumber}?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
+            closeCheckoutModal();
         }
 
         function filterCategory(category) {
@@ -230,4 +296,4 @@
         fetchProducts();
     </script>
 </body>
-</html>
+</html
