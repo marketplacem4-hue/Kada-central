@@ -3,356 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kada Central - Advanced E-Commerce</title>
-
-    <!-- Google Translate API -->
-    <script type="text/javascript">
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({pageLanguage: 'ta'}, 'google_translate_element');
-        }
-    </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
-    <style>
-        * { box-sizing: border-box; }
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 15px;
-            background-color: #f4f4f9;
-            color: #333;
-        }
-        .container {
-            max-width: 900px;
-            margin: auto;
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .header-container { text-align: center; margin-bottom: 15px; }
-        .header-btn {
-            background-color: #ff4d4d;
-            color: white;
-            padding: 12px 30px;
-            font-size: 24px;
-            font-weight: bold;
-            border-radius: 8px;
-            display: inline-block;
-        }
-        .sub-text { color: #666; font-size: 15px; margin-top: 5px; }
-        
-        .lang-box {
-            background: #f0f0f0;
-            padding: 10px;
-            border-radius: 8px;
-            margin: 15px 0;
-            text-align: center;
-        }
-
-        /* தேடல் & வகைகள் (Search & Categories) */
-        .controls-box {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .search-box {
-            flex: 2;
-            min-width: 200px;
-            padding: 12px;
-            font-size: 15px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-        }
-        .category-select {
-            flex: 1;
-            min-width: 150px;
-            padding: 12px;
-            font-size: 15px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            background: #fff;
-        }
-
-        /* பொருட்கள் பட்டியல் (Product Grid) */
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-        }
-        .product-card {
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 15px;
-            background: #fff;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .product-img {
-            width: 100%;
-            height: 160px;
-            object-fit: cover;
-            border-radius: 6px;
-            background-color: #eee;
-        }
-        .product-title { font-size: 17px; font-weight: bold; margin: 10px 0 5px 0; color: #2c3e50; }
-        .product-price { font-size: 16px; color: #e74c3c; font-weight: bold; margin-bottom: 5px; }
-        .stock-tag {
-            display: inline-block;
-            background-color: #27ae60;
-            color: white;
-            padding: 3px 8px;
-            font-size: 12px;
-            border-radius: 4px;
-            margin-bottom: 10px;
-            width: fit-content;
-        }
-        .out-of-stock { background-color: #7f8c8d; }
-        .add-cart-btn {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        /* கார்ட் & ஆர்டர் படிவம் (Cart & Order Form) */
-        .cart-section {
-            margin-top: 30px;
-            background: #eef9f1;
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid #c3e6cb;
-        }
-        .form-group {
-            margin-top: 10px;
-        }
-        .form-input {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 14px;
-        }
-        .checkout-btn {
-            display: block;
-            background-color: #25D366;
-            color: white;
-            text-align: center;
-            padding: 12px;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 18px;
-            margin-top: 15px;
-        }
-
-        .contact-section {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-            text-align: center;
-        }
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            margin: 5px;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: bold;
-        }
-        .map-btn { background-color: #4285F4; }
-        .call-btn { background-color: #e74c3c; }
-    </style>
+    <title>My Professional Store</title>
+    <!-- Tailwind CSS for Modern Styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
+<body class="bg-gray-100 font-sans">
 
-    <div class="container">
-        <!-- தலைப்பு -->
-        <div class="header-container">
-            <div class="header-btn">🛒 KADA CENTRAL</div>
-            <div class="sub-text">உங்கள் தேவைகளுக்கான ஆன்லைன் வணிக மையம்</div>
+    <!-- Header Navigation -->
+    <header class="bg-orange-500 text-white sticky top-0 z-50 shadow-md">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <h1 class="text-2xl font-bold tracking-wide flex items-center gap-2">
+                <i class="fa-solid font-bold fa-store"></i> My Online Store
+            </h1>
+            <div class="relative w-1/2 hidden md:block">
+                <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="பொருட்களைத் தேடுங்கள் (Search)..." class="w-full px-4 py-2 text-black rounded-lg focus:outline-none">
+            </div>
+            <div class="text-sm font-semibold">
+                <i class="fa-brands fa-whatsapp text-green-300 text-xl"></i> Easy WhatsApp Order
+            </div>
+        </div>
+    </header>
+
+    <!-- Category Filter Bar -->
+    <nav class="bg-white shadow-sm py-3 mb-6">
+        <div class="container mx-auto px-4 flex gap-4 overflow-x-auto text-sm font-medium text-gray-700">
+            <button onclick="filterCategory('all')" class="px-4 py-1.5 bg-orange-100 text-orange-600 rounded-full font-semibold border border-orange-300">அனைத்தும் (All)</button>
+            <button onclick="filterCategory('grocery')" class="px-4 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-full">மளிகை (Grocery)</button>
+            <button onclick="filterCategory('electronics')" class="px-4 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-full">எலெக்ட்ரானிக்ஸ் (Electronics)</button>
+        </div>
+    </nav>
+
+    <!-- Main Content Grid -->
+    <main class="container mx-auto px-4 pb-12">
+        <h2 class="text-xl font-bold text-gray-800 mb-4">சிறப்புப் பொருட்கள் (Products)</h2>
+        
+        <!-- Loading Spinner -->
+        <div id="loading" class="text-center py-12">
+            <div class="inline-block animate-spin rounded-full h-10 w-10 border-4 border-orange-500 border-t-transparent"></div>
+            <p class="mt-2 text-gray-600 font-medium">பொருட்கள் பதிவேற்றப்படுகின்றன...</p>
         </div>
 
-        <!-- மொழி தேர்வு -->
-        <div class="lang-box">
-            <span style="font-weight:bold; font-size:14px;">Select Language / மொழியைத் தேர்ந்தெடுக்கவும்: </span>
-            <div id="google_translate_element" style="display:inline-block;"></div>
+        <!-- Product Cards Container -->
+        <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            <!-- Products will load dynamically here -->
         </div>
+    </main>
 
-        <!-- தேடல் மற்றும் பிரிவுகள் (Category Filter & Search) -->
-        <div class="controls-box">
-            <input type="text" id="searchInput" class="search-box" onkeyup="filterProducts()" placeholder="🔍 பொருளின் பெயரைத் தேடவும்...">
-            <select id="categorySelect" class="category-select" onchange="filterProducts()">
-                <option value="all">அனைத்துப் பிரிவுகளும்</option>
-                <option value="grocery">மளிகைப் பொருட்கள்</option>
-                <option value="electronics">எலெக்ட்ரானிக்ஸ்</option>
-                <option value="fashion">ஆடைகள்</option>
-            </select>
-        </div>
-
-        <h2 style="color:#333; margin-top:10px;">எங்களின் பொருட்கள் (Products)</h2>
-
-        <!-- பொருட்கள் பட்டியல் -->
-        <div class="product-grid" id="productGrid">
-            
-            <!-- பொருள் 1 -->
-            <div class="product-card" data-category="grocery">
-                <div>
-                    <img src="https://via.placeholder.com/250x160?text=Grocery+Item" alt="பொருள் 1" class="product-img">
-                    <div class="product-title">மளிகைப் பொருள் 1</div>
-                    <div class="product-price">Rs. 1,500.00</div>
-                    <span class="stock-tag">இருப்பில் உள்ளது</span>
-                </div>
-                <button class="add-cart-btn" onclick="addToCart('மளிகைப் பொருள் 1', 1500)">🛒 கார்ட்டில் சேர்க்க</button>
-            </div>
-
-            <!-- பொருள் 2 -->
-            <div class="product-card" data-category="electronics">
-                <div>
-                    <img src="https://via.placeholder.com/250x160?text=Electronics" alt="பொருள் 2" class="product-img">
-                    <div class="product-title">எலெக்ட்ரானிக் பொருள் 2</div>
-                    <div class="product-price">Rs. 2,800.00</div>
-                    <span class="stock-tag">இருப்பில் உள்ளது</span>
-                </div>
-                <button class="add-cart-btn" onclick="addToCart('எலெக்ட்ரானிக் பொருள் 2', 2800)">🛒 கார்ட்டில் சேர்க்க</button>
-            </div>
-
-            <!-- பொருள் 3 -->
-            <div class="product-card" data-category="fashion">
-                <div>
-                    <img src="https://via.placeholder.com/250x160?text=Fashion" alt="பொருள் 3" class="product-img">
-                    <div class="product-title">ஆடைப் பொருள் 3</div>
-                    <div class="product-price">Rs. 950.00</div>
-                    <span class="stock-tag out-of-stock">இருப்பில் இல்லை</span>
-                </div>
-                <button class="add-cart-btn" style="background:#aaa; cursor:not-allowed;" disabled>Out of Stock</button>
-            </div>
-
-        </div>
-
-        <!-- கார்ட் மற்றும் வாடிக்கையாளர் விவரப் படிவம் -->
-        <div class="cart-section">
-            <h3 style="margin-top:0;">🛍️ நீங்கள் தேர்வு செய்த பொருட்கள் (Shopping Cart)</h3>
-            <div id="cartItems"><p style="color:#777;">பொருட்கள் எதுவும் சேர்க்கப்படவில்லை.</p></div>
-            <hr style="border: 0.5px solid #ccc; margin: 15px 0;">
-            <div style="font-size:18px; font-weight:bold;">மொத்தத் தொகை: Rs. <span id="totalPrice">0</span>.00</div>
-
-            <!-- வாடிக்கையாளர் விவரங்கள் -->
-            <h4 style="margin-bottom:5px; margin-top:20px;">📦 டெலிவரி விவரங்களை நிரப்பவும்:</h4>
-            <div class="form-group">
-                <input type="text" id="custName" class="form-input" placeholder="உங்கள் பெயர் (Your Name)">
-            </div>
-            <div class="form-group">
-                <input type="text" id="custAddress" class="form-input" placeholder="வீட்டு முகவரி (Delivery Address)">
-            </div>
-            <div class="form-group">
-                <input type="tel" id="custPhone" class="form-input" placeholder="தொலைபேசி எண் (Phone Number)">
-            </div>
-
-            <a href="#" onclick="sendWhatsAppOrder()" class="checkout-btn">💬 வாட்ஸ்அப்பில் ஆர்டர் அனுப்பவும்</a>
-        </div>
-
-        <!-- தொடர்பு விவரங்கள் -->
-        <div class="contact-section">
-            <h3>தொடர்பு விவரங்கள்</h3>
-            <a href="tel:+94770000000" class="btn call-btn">📞 போன் செய்ய</a>
-            <a href="https://maps.google.com" target="_blank" class="btn map-btn">📍 Google Maps முகவரி</a>
-        </div>
-    </div>
-
+    <!-- JavaScript Engine to Fetch Data from Google Sheets -->
     <script>
-        let cart = [];
-        let total = 0;
-        // உங்கள் வாட்ஸ்அப் எண்ணை கீழே மாற்றவும்
+        // Paste your published CSV link here
+        const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQIW6nyj8m8_cIGW6k6Akpu86Fo7U_5rfKiYz8nKHatC7GWkZdC6vWBWvZHRInD5vPBMfP-t6ZD2Fye/pub?gid=0&single=true&output=csv';
+        
+        // YOUR WHATSAPP NUMBER HERE (e.g., 94712345678)
         const myPhoneNumber = "94770000000"; 
 
-        function addToCart(name, price) {
-            cart.push({name, price});
-            total += price;
-            updateCartUI();
+        let allProducts = [];
+
+        async function fetchProducts() {
+            try {
+                const response = await fetch(csvUrl);
+                const data = await response.text();
+                
+                const rows = data.split('\n').map(row => row.trim()).filter(row => row);
+                const headers = rows[0].split(',').map(h => h.trim());
+
+                allProducts = rows.slice(1).map(row => {
+                    const values = row.split(',').map(v => v.trim());
+                    return {
+                        name: values[0],
+                        price: values[1],
+                        originalPrice: values[2],
+                        category: values[3],
+                        imageUrl: values[4]
+                    };
+                });
+
+                document.getElementById('loading').style.display = 'none';
+                displayProducts(allProducts);
+            } catch (error) {
+                console.error('Error fetching CSV:', error);
+                document.getElementById('loading').innerHTML = '<p class="text-red-500">பொருட்களை ஏற்றுவதில் சிக்கல் உள்ளது. தயவுசெய்து CSV லிங்கை சரிபார்க்கவும்.</p>';
+            }
         }
 
-        function updateCartUI() {
-            const cartItemsContainer = document.getElementById('cartItems');
-            const totalPriceContainer = document.getElementById('totalPrice');
-            
-            if (cart.length === 0) {
-                cartItemsContainer.innerHTML = '<p style="color:#777;">பொருட்கள் எதுவும் சேர்க்கப்படவில்லை.</p>';
-                totalPriceContainer.innerText = '0';
-                return;
-            }
+        function displayProducts(products) {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = '';
 
-            cartItemsContainer.innerHTML = '';
-            cart.forEach((item, index) => {
-                cartItemsContainer.innerHTML += `
-                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                        <span>${index + 1}. ${item.name}</span>
-                        <span>Rs. ${item.price}.00</span>
+            products.forEach(product => {
+                const whatsappMessage = encodeURIComponent(`வணக்கம்! நான் உங்கள் கடையில் இந்த பொருளை ஆர்டர் செய்ய விரும்புகிறேன்:\n\n*பொருள்:* ${product.name}\n*விலை:* Rs.${product.price}`);
+                const whatsappUrl = `https://wa.me/${myPhoneNumber}?text=${whatsappMessage}`;
+
+                const card = `
+                    <div class="bg-white rounded-lg shadow hover:shadow-lg transition duration-200 overflow-hidden border border-gray-100 flex flex-col justify-between">
+                        <div>
+                            <img src="${product.imageUrl}" alt="${product.name}" class="w-full h-36 object-cover bg-gray-50" onerror="this.src='https://via.placeholder.com/250x160?text=No+Image'">
+                            <div class="p-3">
+                                <span class="text-xs font-semibold uppercase bg-orange-50 text-orange-600 px-2 py-0.5 rounded">${product.category}</span>
+                                <h3 class="text-sm font-semibold text-gray-800 mt-1 line-clamp-2">${product.name}</h3>
+                                <div class="mt-2 flex items-baseline gap-2">
+                                    <span class="text-base font-bold text-orange-600">Rs. ${product.price}</span>
+                                    ${product.originalPrice ? `<span class="text-xs text-gray-400 line-through">Rs. ${product.originalPrice}</span>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-3 pt-0">
+                            <a href="${whatsappUrl}" target="_blank" class="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-1.5 rounded-md flex items-center justify-center gap-1.5 text-sm transition">
+                                <i class="fa-brands fa-whatsapp"></i> Buy via WhatsApp
+                            </a>
+                        </div>
                     </div>
                 `;
+                grid.innerHTML += card;
             });
-            totalPriceContainer.innerText = total;
         }
 
-        function sendWhatsAppOrder() {
-            if (cart.length === 0) {
-                alert("தயவுசெய்து முதலில் ஏதேனும் ஒரு பொருளைக் கார்ட்டில் சேர்க்கவும்!");
-                return;
+        function filterCategory(category) {
+            if (category === 'all') {
+                displayProducts(allProducts);
+            } else {
+                const filtered = allProducts.filter(p => p.category.toLowerCase() === category.toLowerCase());
+                displayProducts(filtered);
             }
-
-            const name = document.getElementById('custName').value.trim();
-            const address = document.getElementById('custAddress').value.trim();
-            const phone = document.getElementById('custPhone').value.trim();
-
-            if (!name || !address || !phone) {
-                alert("தயவுசெய்து உங்கள் பெயர், முகவரி மற்றும் போன் எண்ணை நிரப்பவும்!");
-                return;
-            }
-
-            let message = `வணக்கம் Kada Central!\nநான் புதிய ஆர்டர் செய்ய விரும்புகிறேன்:\n\n`;
-            message += `👤 *பெயர்:* ${name}\n`;
-            message += `📍 *முகவரி:* ${address}\n`;
-            message += `📞 *போன் எண்:* ${phone}\n\n`;
-            message += `🛒 *ஆர்டர் செய்த பொருட்கள்:*\n`;
-
-            cart.forEach((item, index) => {
-                message += `${index + 1}. ${item.name} - Rs. ${item.price}\n`;
-            });
-            
-            message += `\n💰 *மொத்தத் தொகை:* Rs. ${total}.00\n\nஆர்டரை உறுதி செய்யவும்.`;
-
-            const encodedMessage = encodeURIComponent(message);
-            window.open(`https://wa.me/${myPhoneNumber}?text=${encodedMessage}`, '_blank');
         }
 
         function filterProducts() {
-            let searchInput = document.getElementById('searchInput').value.toLowerCase();
-            let categorySelect = document.getElementById('categorySelect').value;
-            let cards = document.getElementsByClassName('product-card');
-
-            for (let i = 0; i < cards.length; i++) {
-                let title = cards[i].getElementsByClassName('product-title')[0].innerText.toLowerCase();
-                let category = cards[i].getAttribute('data-category');
-
-                let matchesSearch = title.includes(searchInput);
-                let matchesCategory = (categorySelect === 'all') || (category === categorySelect);
-
-                if (matchesSearch && matchesCategory) {
-                    cards[i].style.display = "flex";
-                } else {
-                    cards[i].style.display = "none";
-                }
-            }
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = allProducts.filter(p => p.name.toLowerCase().includes(query));
+            displayProducts(filtered);
         }
-    </script>
 
+        // Initialize App
+        fetchProducts();
+    </script>
 </body>
 </html>
