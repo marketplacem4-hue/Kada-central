@@ -7,30 +7,51 @@
     <!-- Tailwind CSS for Modern Styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Translate Script -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'ta',
+                includedLanguages: 'ta,en,si',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </head>
 <body class="bg-gray-100 font-sans">
 
+    <!-- Top Bar with Google Translate -->
+    <div class="bg-gray-800 text-white text-xs py-1.5 px-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <span>👋 வரவேற்பு! உங்கள் ஆன்லைன் கடைக்கு நல்வரவு</span>
+            <!-- Translate Dropdown Container -->
+            <div id="google_translate_element"></div>
+        </div>
+    </div>
+
     <!-- Header Navigation -->
     <header class="bg-orange-500 text-white sticky top-0 z-50 shadow-md">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <h1 class="text-2xl font-bold tracking-wide flex items-center gap-2">
-                <i class="fa-solid font-bold fa-store"></i> My Online Store
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center gap-2">
+            <h1 class="text-xl md:text-2xl font-bold tracking-wide flex items-center gap-2">
+                <i class="fa-solid fa-store"></i> My Online Store
             </h1>
             <div class="relative w-1/2 hidden md:block">
                 <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="பொருட்களைத் தேடுங்கள் (Search)..." class="w-full px-4 py-2 text-black rounded-lg focus:outline-none">
             </div>
-            <div class="text-sm font-semibold">
-                <i class="fa-brands fa-whatsapp text-green-300 text-xl"></i> Easy WhatsApp Order
+            <div class="text-xs md:text-sm font-semibold flex items-center gap-1">
+                <i class="fa-brands fa-whatsapp text-green-300 text-lg"></i> Easy WhatsApp Order
             </div>
         </div>
     </header>
 
     <!-- Category Filter Bar -->
     <nav class="bg-white shadow-sm py-3 mb-6">
-        <div class="container mx-auto px-4 flex gap-4 overflow-x-auto text-sm font-medium text-gray-700">
-            <button onclick="filterCategory('all')" class="px-4 py-1.5 bg-orange-100 text-orange-600 rounded-full font-semibold border border-orange-300">அனைத்தும் (All)</button>
-            <button onclick="filterCategory('grocery')" class="px-4 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-full">மளிகை (Grocery)</button>
-            <button onclick="filterCategory('electronics')" class="px-4 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-full">எலெக்ட்ரானிக்ஸ் (Electronics)</button>
+        <div class="container mx-auto px-4 flex gap-3 overflow-x-auto text-sm font-medium text-gray-700">
+            <button onclick="filterCategory('all')" class="px-4 py-1.5 bg-orange-100 text-orange-600 rounded-full font-semibold border border-orange-300 whitespace-nowrap">அனைத்தும் (All)</button>
+            <button onclick="filterCategory('grocery')" class="px-4 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-full whitespace-nowrap">மளிகை (Grocery)</button>
+            <button onclick="filterCategory('electronics')" class="px-4 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-full whitespace-nowrap">எலெக்ட்ரானிக்ஸ் (Electronics)</button>
         </div>
     </nav>
 
@@ -52,10 +73,10 @@
 
     <!-- JavaScript Engine to Fetch Data from Google Sheets -->
     <script>
-        // Paste your published CSV link here
+        // Published CSV link from Google Sheets
         const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQIW6nyj8m8_cIGW6k6Akpu86Fo7U_5rfKiYz8nKHatC7GWkZdC6vWBWvZHRInD5vPBMfP-t6ZD2Fye/pub?gid=0&single=true&output=csv';
         
-        // YOUR WHATSAPP NUMBER HERE (e.g., 94712345678)
+        // YOUR WHATSAPP NUMBER HERE (e.g., 94770000000)
         const myPhoneNumber = "94770000000"; 
 
         let allProducts = [];
@@ -66,7 +87,6 @@
                 const data = await response.text();
                 
                 const rows = data.split('\n').map(row => row.trim()).filter(row => row);
-                const headers = rows[0].split(',').map(h => h.trim());
 
                 allProducts = rows.slice(1).map(row => {
                     const values = row.split(',').map(v => v.trim());
@@ -83,7 +103,7 @@
                 displayProducts(allProducts);
             } catch (error) {
                 console.error('Error fetching CSV:', error);
-                document.getElementById('loading').innerHTML = '<p class="text-red-500">பொருட்களை ஏற்றுவதில் சிக்கல் உள்ளது. தயவுசெய்து CSV லிங்கை சரிபார்க்கவும்.</p>';
+                document.getElementById('loading').innerHTML = '<p class="text-red-500">பொருட்களை ஏற்றுவதில் சிக்கல் உள்ளது.</p>';
             }
         }
 
