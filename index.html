@@ -8,6 +8,22 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
+    <!-- Custom CSS to Hide Google Branded Header -->
+    <style>
+        .goog-te-banner-frame.skiptranslate { display: none !important; }
+        body { top: 0px !important; }
+        .goog-te-gadget-icon { display: none !important; }
+        .goog-te-gadget-simple {
+            background-color: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+            font-size: 14px !important;
+            cursor: pointer;
+        }
+        .goog-te-gadget-simple span { color: white !important; font-weight: 600; }
+        .goog-te-menu-value span { border: none !important; }
+    </style>
+
     <!-- Google Translate Script -->
     <script type="text/javascript">
         function googleTranslateElementInit() {
@@ -20,29 +36,38 @@
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </head>
-<body class="bg-gray-100 font-sans">
+<body class="bg-gray-100 font-sans pb-24">
 
-    <!-- Top Bar with Google Translate -->
-    <div class="bg-gray-800 text-white text-xs py-1.5 px-4">
+    <!-- Top Bar with Clean Language Selector -->
+    <div class="bg-gray-900 text-white text-xs py-2 px-4 shadow">
         <div class="container mx-auto flex justify-between items-center">
-            <span>👋 வரவேற்பு! உங்கள் ஆன்லைன் கடைக்கு நல்வரவு</span>
-            <!-- Translate Dropdown Container -->
-            <div id="google_translate_element"></div>
+            <span>வணக்கம்! உங்கள் ஆன்லைன் கடைக்கு நல்வரவு</span>
+            
+            <!-- Compact Language Dropdown -->
+            <div class="flex items-center gap-1.5 bg-gray-800 px-3 py-1 rounded-full border border-gray-700">
+                <i class="fa-solid fa-globe text-orange-400"></i>
+                <div id="google_translate_element"></div>
+            </div>
         </div>
     </div>
 
     <!-- Header Navigation -->
-    <header class="bg-orange-500 text-white sticky top-0 z-50 shadow-md">
+    <header class="bg-orange-500 text-white sticky top-0 z-40 shadow-md">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center gap-2">
             <h1 class="text-xl md:text-2xl font-bold tracking-wide flex items-center gap-2">
                 <i class="fa-solid fa-store"></i> My Online Store
             </h1>
+            
+            <!-- Search Bar -->
             <div class="relative w-1/2 hidden md:block">
-                <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="பொருட்களைத் தேடுங்கள் (Search)..." class="w-full px-4 py-2 text-black rounded-lg focus:outline-none">
+                <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="பொருட்களைத் தேடுங்கள் (Search)..." class="w-full px-4 py-1.5 text-black rounded-lg focus:outline-none text-sm">
             </div>
-            <div class="text-xs md:text-sm font-semibold flex items-center gap-1">
-                <i class="fa-brands fa-whatsapp text-green-300 text-lg"></i> Easy WhatsApp Order
-            </div>
+
+            <!-- Header Cart Indicator -->
+            <button onclick="toggleCartModal()" class="relative bg-orange-600 hover:bg-orange-700 px-3 py-1.5 rounded-lg flex items-center gap-2 transition">
+                <i class="fa-solid fa-cart-shopping text-lg"></i>
+                <span class="font-bold text-sm" id="cartCount">0</span>
+            </button>
         </div>
     </header>
 
@@ -56,7 +81,7 @@
     </nav>
 
     <!-- Main Content Grid -->
-    <main class="container mx-auto px-4 pb-12">
+    <main class="container mx-auto px-4">
         <h2 class="text-xl font-bold text-gray-800 mb-4">சிறப்புப் பொருட்கள் (Products)</h2>
         
         <!-- Loading Spinner -->
@@ -71,15 +96,28 @@
         </div>
     </main>
 
-    <!-- JavaScript Engine to Fetch Data from Google Sheets -->
+    <!-- Floating Bottom Cart Bar -->
+    <div id="cartBar" class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg p-3 z-30 hidden">
+        <div class="container mx-auto flex justify-between items-center">
+            <div>
+                <p class="text-xs text-gray-500">மொத்த தொகை (Total):</p>
+                <p class="text-lg font-bold text-orange-600" id="cartTotal">Rs. 0</p>
+            </div>
+            <button onclick="sendCartToWhatsApp()" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-5 rounded-lg flex items-center gap-2 text-sm shadow transition">
+                <i class="fa-brands fa-whatsapp text-lg"></i> WhatsApp-இல் ஆர்டர் செய்
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript Engine -->
     <script>
-        // Published CSV link from Google Sheets
         const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQIW6nyj8m8_cIGW6k6Akpu86Fo7U_5rfKiYz8nKHatC7GWkZdC6vWBWvZHRInD5vPBMfP-t6ZD2Fye/pub?gid=0&single=true&output=csv';
         
-        // YOUR WHATSAPP NUMBER HERE (e.g., 94770000000)
+        // உங்கள் வாட்ஸ்அப் எண்ணை இங்கே மாற்றவும் (உதாரணமாக: 94770000000)
         const myPhoneNumber = "94770000000"; 
 
         let allProducts = [];
+        let cart = [];
 
         async function fetchProducts() {
             try {
@@ -92,7 +130,7 @@
                     const values = row.split(',').map(v => v.trim());
                     return {
                         name: values[0],
-                        price: values[1],
+                        price: parseFloat(values[1]) || 0,
                         originalPrice: values[2],
                         category: values[3],
                         imageUrl: values[4]
@@ -111,10 +149,7 @@
             const grid = document.getElementById('productGrid');
             grid.innerHTML = '';
 
-            products.forEach(product => {
-                const whatsappMessage = encodeURIComponent(`வணக்கம்! நான் உங்கள் கடையில் இந்த பொருளை ஆர்டர் செய்ய விரும்புகிறேன்:\n\n*பொருள்:* ${product.name}\n*விலை:* Rs.${product.price}`);
-                const whatsappUrl = `https://wa.me/${myPhoneNumber}?text=${whatsappMessage}`;
-
+            products.forEach((product, index) => {
                 const card = `
                     <div class="bg-white rounded-lg shadow hover:shadow-lg transition duration-200 overflow-hidden border border-gray-100 flex flex-col justify-between">
                         <div>
@@ -129,14 +164,51 @@
                             </div>
                         </div>
                         <div class="p-3 pt-0">
-                            <a href="${whatsappUrl}" target="_blank" class="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-1.5 rounded-md flex items-center justify-center gap-1.5 text-sm transition">
-                                <i class="fa-brands fa-whatsapp"></i> Buy via WhatsApp
-                            </a>
+                            <button onclick="addToCart(${index})" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium py-1.5 rounded-md flex items-center justify-center gap-1.5 text-sm transition">
+                                <i class="fa-solid fa-cart-plus"></i> கார்ட்டில் சேர்
+                            </button>
                         </div>
                     </div>
                 `;
                 grid.innerHTML += card;
             });
+        }
+
+        function addToCart(index) {
+            const product = allProducts[index];
+            cart.push(product);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            document.getElementById('cartCount').innerText = cart.length;
+            
+            let total = cart.reduce((sum, item) => sum + item.price, 0);
+            document.getElementById('cartTotal').innerText = `Rs. ${total}`;
+
+            const cartBar = document.getElementById('cartBar');
+            if (cart.length > 0) {
+                cartBar.classList.remove('hidden');
+            } else {
+                cartBar.classList.add('hidden');
+            }
+        }
+
+        function sendCartToWhatsApp() {
+            if (cart.length === 0) return;
+
+            let message = "வணக்கம்! நான் பின்வரும் பொருட்களை ஆர்டர் செய்ய விரும்புகிறேன்:\n\n";
+            let total = 0;
+
+            cart.forEach((item, i) => {
+                message += `${i + 1}. *${item.name}* - Rs.${item.price}\n`;
+                total += item.price;
+            });
+
+            message += `\n*மொத்தத் தொகை:* Rs.${total}`;
+
+            const whatsappUrl = `https://wa.me/${myPhoneNumber}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
         }
 
         function filterCategory(category) {
